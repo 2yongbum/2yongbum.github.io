@@ -62,9 +62,9 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required placeholder="Enter your password">
         </div>
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date" required>
+        <div id="dates-container" class="form-group">
+            <label>Dates</label>
+            <input type="date" class="date-input" name="dates[]">
         </div>
         <button type="submit">Submit</button>
     </form>
@@ -73,14 +73,44 @@
         const tg = window.Telegram.WebApp;
         tg.expand(); // Expand to full height
 
+        const datesContainer = document.getElementById('dates-container');
+        
+        function addDateInput() {
+            const newInput = document.createElement('input');
+            newInput.type = 'date';
+            newInput.className = 'date-input';
+            newInput.name = 'dates[]';
+            newInput.style.marginTop = '10px';
+            datesContainer.appendChild(newInput);
+            newInput.addEventListener('change', handleDateChange);
+        }
+
+        function handleDateChange(e) {
+            const inputs = datesContainer.getElementsByClassName('date-input');
+            const lastInput = inputs[inputs.length - 1];
+            
+            // If the last input has a value, add a new one
+            if (e.target === lastInput && lastInput.value) {
+                addDateInput();
+            }
+        }
+
+        // Initialize first listener
+        document.querySelector('.date-input').addEventListener('change', handleDateChange);
+
         const form = document.getElementById('reservationForm');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
+            const dateInputs = Array.from(datesContainer.getElementsByClassName('date-input'));
+            const dates = dateInputs
+                .map(input => input.value)
+                .filter(value => value !== "");
+
             const data = {
                 id: document.getElementById('id').value,
                 password: document.getElementById('password').value,
-                date: document.getElementById('date').value
+                dates: dates
             };
             
             // Send data back to the bot
