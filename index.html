@@ -62,6 +62,64 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required placeholder="Enter your password">
         </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Expand to full height
+
+        const form = document.getElementById('reservationForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const data = {
+                id: document.getElementById('id').value,
+                password: document.getElementById('password').value,
+                date: document.getElementById('date').value
+            };
+            
+            // Send data back to the bot
+            tg.sendData(JSON.stringify(data));
+            
+            // Close the Web App
+            tg.close();
+        });
+    </script>
+</body>
+</html>
+        button {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h2>Reservation Form</h2>
+    <form id="reservationForm">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" id="id" name="id" required placeholder="Enter your ID">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
         <button type="submit">Submit</button>
     </form>
 
